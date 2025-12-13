@@ -2,7 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
+
 import db from "./config/database.js";
+import { requireAuth, setDefaultLocals } from "./middleware/index.js";
+import { authRoutes } from "./routes/index.js";
 
 dotenv.config();
 
@@ -26,11 +29,16 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      rolling: true,
     },
   })
 );
 
-app.get("/", (req, res) => {
+app.use(setDefaultLocals);
+
+app.use("/", authRoutes);
+
+app.get("/", requireAuth, (req, res) => {
   res.render("index", { title: "Longless - Home" });
 });
 
