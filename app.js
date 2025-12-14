@@ -4,8 +4,8 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 
 import db from "./config/database.js";
-import { requireAuth, setDefaultLocals } from "./middleware/index.js";
-import { authRoutes } from "./routes/index.js";
+import { requireAuth, setDefaultLocals, notFound } from "./middleware/index.js";
+import { authRoutes, linkRoutes, redirectRoutes } from "./routes/index.js";
 
 dotenv.config();
 
@@ -37,10 +37,16 @@ app.use(
 app.use(setDefaultLocals);
 
 app.use("/", authRoutes);
+app.use("/", linkRoutes);
 
 app.get("/", requireAuth, (req, res) => {
   res.render("index", { title: "Longless - Home" });
 });
+
+app.use(redirectRoutes);
+
+// 404 Not Found handler
+app.use(notFound);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

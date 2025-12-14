@@ -32,3 +32,23 @@ export const findUserById = (id) => {
 export const validatePassword = (password, hash) => {
   return bycrypt.compareSync(password, hash);
 };
+
+export const findUrlByShortCode = (shortCode) => {
+  const stmt = db.prepare("SELECT * FROM urls WHERE short_code = ?");
+  return stmt.get(shortCode);
+};
+
+export const createUrl = (userId, shortCode, originalUrl, title = null) => {
+  const stmt = db.prepare(
+    "INSERT INTO urls (user_id, short_code, original_url, title) VALUES (?, ?, ?, ?)"
+  );
+  const result = stmt.run(userId, shortCode, originalUrl, title);
+  return result.lastInsertRowid;
+};
+
+export const recordClick = (urlId, ip, userAgent) => {
+  const stmt = db.prepare(
+    "INSERT INTO clicks (url_id, ip_address, user_agent) VALUES (?, ?, ?)"
+  );
+  return stmt.run(urlId, ip, userAgent);
+};

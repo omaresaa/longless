@@ -1,0 +1,54 @@
+<div class="container mx-auto px-4 py-8">
+
+  <div class="mb-8">
+    <h1>Welcome back, <%= user.username %>!</h1>
+  </div>
+
+  <div class="mb-8 bg-white rounded-lg shadow p-6">
+    <h2>Create New Short Link</h2>
+    <form action="/shorten" method="POST">
+    </form>
+  </div>
+
+  <div class="bg-white rounded-lg shadow">
+    <h2>Your Links</h2>
+
+    <% if (links.length===0) { %>
+      <p>You haven't created any links yet.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Short Link</th>
+              <th>Original URL</th>
+              <th>Clicks</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% links.forEach(link=> { %>
+              <tr>
+                <td>
+                  <!-- Short link with copy button -->
+                </td>
+                <td>
+                  <!-- Original URL (truncated) -->
+                </td>
+                <td>
+                  <!-- Click count -->
+                </td>
+                <td>
+                  <!-- Created date (formatted) -->
+                </td>
+                <td>
+                  <!-- Delete button -->
+                </td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+        <% } %>
+  </div>
+
+</div>
