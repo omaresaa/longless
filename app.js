@@ -4,7 +4,7 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 
 import db from "./config/database.js";
-import { requireAuth, setDefaultLocals, notFound } from "./middleware/index.js";
+import { requireAuth, notFound, setupRender } from "./middleware/index.js";
 import { authRoutes, linkRoutes, redirectRoutes } from "./routes/index.js";
 
 dotenv.config();
@@ -34,13 +34,13 @@ app.use(
   })
 );
 
-app.use(setDefaultLocals);
+app.use(setupRender);
 
 app.use("/", authRoutes);
 app.use("/", linkRoutes);
 
 app.get("/", requireAuth, (req, res) => {
-  res.render("index", { title: "Longless - Home" });
+  res.renderPage("home");
 });
 
 app.use(redirectRoutes);

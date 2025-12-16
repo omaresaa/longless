@@ -6,20 +6,19 @@ import { generateShortCode, isValidUrl } from "../utils/helpers.js";
 
 const router = express.Router();
 
-// POST /shorten
-router.post("/shorten", requireAuth, (req, res) => {
+// POST /:page/shorten
+router.post("/:page/shorten", requireAuth, (req, res) => {
   const { originalUrl } = req.body;
+  const page = req.params.page;
 
   if (!originalUrl) {
-    return res.render("index", {
-      title: "Longless - Home",
+    return res.renderPage(page, {
       error: "Please provide a URL to shorten.",
     });
   }
 
   if (!isValidUrl(originalUrl)) {
-    return res.render("index", {
-      title: "Longless - Home",
+    return res.renderPage(page, {
       error: "Please enter a valid URL.",
     });
   }
@@ -28,14 +27,12 @@ router.post("/shorten", requireAuth, (req, res) => {
     const shortCode = generateShortCode();
     createUrl(req.session.userId, shortCode, originalUrl);
 
-    res.render("index", {
-      title: "Longless - Home",
+    res.renderPage(page, {
       shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`,
     });
   } catch (error) {
     console.error("Error creating short URL:", err);
-    res.render("index", {
-      title: "Longless - Home",
+    res.renderPage(page, {
       error: "Something went wrong. Please try again.",
     });
   }
@@ -43,7 +40,7 @@ router.post("/shorten", requireAuth, (req, res) => {
 
 // GET /dashboard
 router.get("/dashboard", requireAuth, (req, res) => {
-  res.render("dashboard", { title: "Longless - Dashboard", links: [] });
+  res.renderPage("dashboard");
 });
 
 export default router;
