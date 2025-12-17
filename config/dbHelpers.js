@@ -52,3 +52,20 @@ export const recordClick = (urlId, ip, userAgent) => {
   );
   return stmt.run(urlId, ip, userAgent);
 };
+
+export const getUserLinks = (userId) => {
+  const stmt = db.prepare("SELECT * FROM urls WHERE user_id = ?");
+  return stmt.all(userId);
+};
+
+export const getLinkClickCount = (urlId) => {
+  const stmt = db.prepare(
+    "SELECT COUNT(*) as count FROM clicks WHERE url_id = ?"
+  );
+  return stmt.get(urlId).count;
+};
+
+export const deleteUserLinkById = (linkId, userId) => {
+  const stmt = db.prepare("DELETE FROM urls WHERE id = ? AND user_id = ?");
+  return stmt.run(linkId, userId);
+};

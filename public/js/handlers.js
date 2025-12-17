@@ -6,17 +6,18 @@ export const initHandlers = () => {
 
 const copyLink = (event) => {
   const button = event.target;
-  const link = button.previousElementSibling;
+  const link = button.dataset.shortUrl;
+  if (link) {
+    navigator.clipboard.writeText(link).then(() => {
+      const originalText = button.textContent;
 
-  navigator.clipboard.writeText(link.href).then(() => {
-    const originalText = button.textContent;
+      button.textContent = "Copied!";
+      button.classList.add("text-green-600");
 
-    button.textContent = "Copied!";
-    button.classList.add("text-green-600");
-
-    setTimeout(() => {
-      button.textContent = originalText;
-      button.classList.remove("text-green-600");
-    }, 10000);
-  });
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove("text-green-600");
+      }, 10000);
+    });
+  }
 };
