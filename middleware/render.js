@@ -6,6 +6,7 @@ const pageDefaults = {
   register: { title: "Longless - Sign Up" },
   dashboard: { title: "Longless - Dashboard" },
   notFound: { title: "404 - Page Not Found" },
+  error: { title: "Longless - Error" },
 };
 
 export const setupRender = (req, res, next) => {

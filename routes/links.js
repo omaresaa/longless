@@ -52,6 +52,7 @@ router.post("/links/:id/delete", requireAuth, (req, res) => {
     res.renderPage("dashboard");
   } catch (error) {
     console.error("Error deleting link:", error);
+    res.renderPage("error");
   }
 });
 
