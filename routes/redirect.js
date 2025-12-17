@@ -4,6 +4,7 @@ import { findUrlByShortCode, recordClick } from "../config/dbHelpers.js";
 
 const router = express.Router();
 
+// Redirect to the original URL based on the short code
 router.get("/:shortCode", (req, res, next) => {
   const { shortCode } = req.params;
 

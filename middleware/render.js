@@ -10,6 +10,7 @@ const pageDefaults = {
 };
 
 export const setupRender = (req, res, next) => {
+  // Custom renderPage function to standardize page rendering
   res.renderPage = (template, data = {}) => {
     const defaults = {
       title: "Longless",
@@ -22,6 +23,7 @@ export const setupRender = (req, res, next) => {
       ...(pageDefaults[template] || {}),
     };
 
+    // Add additional data for specific templates
     if (template === "dashboard" && req.session.userId) {
       const links = getUserLinks(req.session.userId);
 

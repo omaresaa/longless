@@ -1,4 +1,5 @@
 export const notFound = (req, res, next) => {
+  // Set the response status to 404 Not Found
   res.status(404);
 
   if (req.accepts("html")) {

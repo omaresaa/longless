@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Template engine setup
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(expressLayouts);
@@ -34,15 +35,16 @@ app.use(
   })
 );
 
+// renderPage wrapper middleware
 app.use(setupRender);
-
-app.use("/", authRoutes);
-app.use("/", linkRoutes);
 
 app.get("/", requireAuth, (req, res) => {
   res.renderPage("home");
 });
 
+// Routes
+app.use("/", authRoutes);
+app.use("/", linkRoutes);
 app.use(redirectRoutes);
 
 // 404 Not Found handler

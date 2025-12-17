@@ -1,4 +1,5 @@
 export function requireAuth(req, res, next) {
+  // Check if the user is authenticated
   if (!req.session.userId) {
     return res.redirect("/login");
   }
@@ -6,6 +7,7 @@ export function requireAuth(req, res, next) {
 }
 
 export function requireGuest(req, res, next) {
+  // Check if the user is a guest
   if (req.session.userId) {
     return res.redirect("/dashboard");
   }
