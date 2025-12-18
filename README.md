@@ -1,10 +1,26 @@
 # Longless
 
+![App Screenshot](./assets/screenshots/image.png)
+
 #### Video Demo:
 
 #### Description:
 
 Longless is a full-stack URL shortening service built with Node.js and Express. It allows users to create shortened URLs, track clicks, and manage their links through a personalized dashboard.
+
+## Table of contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Database Schema](#database-schema)
+  - [Users Table](#users-table)
+  - [URLs Table](#urls-table)
+  - [Clicks Table](#clicks-table)
+- [Project Structure](#project-structure)
+- [Installation & Setup](#installation--setup)
+- [Credits](#credits)
 
 ## Features
 
