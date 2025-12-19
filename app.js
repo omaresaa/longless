@@ -4,6 +4,8 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import SqliteStore from "better-sqlite3-session-store";
 import Database from "better-sqlite3";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import db from "./config/database.js";
 import {
@@ -30,7 +32,10 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 // Session configuration
-const sessionDb = new Database("sessions.db");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const sessionDb = new Database(path.join(__dirname, "./sessions.db"));
 
 const SqliteSessionStore = SqliteStore(session);
 
