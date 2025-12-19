@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
+import SqliteStore from "better-sqlite3-session-store";
+import Database from "better-sqlite3";
 
 import db from "./config/database.js";
 import {
@@ -28,14 +30,28 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 // Session configuration
+const sessionDb = new Database("sessions.db");
+
+const SqliteSessionStore = SqliteStore(session);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "dev-secret-change-in-production",
     resave: false,
     saveUninitialized: false,
+    store: new SqliteSessionStore({
+      client: sessionDb,
+      expired: {
+        clear: true,
+        intervalMs: 900000, // Clean up expired sessions every 15 minutes
+      },
+    }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       rolling: true,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "lax",
     },
   })
 );
