@@ -69,3 +69,13 @@ export const deleteUserLinkById = (linkId, userId) => {
   const stmt = db.prepare("DELETE FROM urls WHERE id = ? AND user_id = ?");
   return stmt.run(linkId, userId);
 };
+
+export const getLinkById = (linkId) => {
+  const stmt = db.prepare("SELECT * FROM urls WHERE id = ?");
+  return stmt.get(linkId);
+};
+
+export const getClickById = (clickId) => {
+  const stmt = db.prepare("SELECT * FROM clicks WHERE id = ?");
+  return stmt.get(clickId);
+};

@@ -1,4 +1,5 @@
 import express from "express";
+import logger from "../utils/logger.js";
 
 import { requireGuest } from "../middleware/auth.js";
 import {
@@ -38,12 +39,14 @@ router.post("/register", requireGuest, async (req, res) => {
   }
 
   if (findUserByUsername(username)) {
+    logger.warn("Registration failed: Username already exists", { username });
     return res.renderPage("register", {
       error: "Username is already taken.",
     });
   }
 
   if (findUserByEmail(email)) {
+    logger.warn("Registration failed: Email already exists", { email });
     return res.renderPage("register", {
       error: "Email is already registered.",
     });
@@ -53,9 +56,16 @@ router.post("/register", requireGuest, async (req, res) => {
     const userId = createUser(username, email, password);
     req.session.userId = userId;
     req.session.username = username;
+    logger.info("New user registered", { userId, username, email });
     res.redirect("/");
   } catch (error) {
-    console.error("Registration error:", error);
+    logger.error("Registration error", {
+      error: error.message,
+      stack: error.stack,
+      username,
+      email,
+    });
+
     res.renderPage("register", {
       error: "Something went wrong. Please try again.",
     });
@@ -78,7 +88,18 @@ router.post("/login", requireGuest, async (req, res) => {
   }
 
   const user = findUserByUsername(username);
-  if (!user || !validatePassword(password, user.hash)) {
+  if (!user) {
+    logger.warn("Login failed: User not found", { username });
+    return res.renderPage("login", {
+      error: "Invalid username or password.",
+    });
+  }
+
+  if (!validatePassword(password, user.hash)) {
+    logger.warn("Login failed: Invalid password", {
+      username,
+      userId: user.id,
+    });
     return res.renderPage("login", {
       error: "Invalid username or password.",
     });
@@ -87,9 +108,15 @@ router.post("/login", requireGuest, async (req, res) => {
   try {
     req.session.userId = user.id;
     req.session.username = username;
+    logger.info("User logged in", { userId: user.id, username });
     res.redirect("/");
   } catch (error) {
-    console.error("Login error:", error);
+    logger.error("Login error", {
+      error: error.message,
+      stack: error.stack,
+      username,
+    });
+
     res.renderPage("login", {
       error: "Something went wrong. Please try again.",
     });
@@ -98,11 +125,21 @@ router.post("/login", requireGuest, async (req, res) => {
 
 // GET /logout
 router.get("/logout", (req, res) => {
+  const userId = req.session.userId;
+  const username = req.session.username;
+
   req.session.destroy((error) => {
     if (error) {
-      console.error("Logout error:", error);
-      return res.redirect("/");
+      logger.error("Logout error", {
+        error: error.message,
+        stack: error.stack,
+        userId,
+        username,
+      });
+      return res.renderPage("error");
     }
+
+    logger.info("User logged out", { userId, username });
     res.clearCookie("connect.sid");
     res.redirect("/login");
   });

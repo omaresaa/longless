@@ -4,7 +4,12 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 
 import db from "./config/database.js";
-import { requireAuth, notFound, setupRender } from "./middleware/index.js";
+import {
+  requireAuth,
+  notFound,
+  setupRender,
+  logRequests,
+} from "./middleware/index.js";
 import { authRoutes, linkRoutes, redirectRoutes } from "./routes/index.js";
 
 dotenv.config();
@@ -37,6 +42,9 @@ app.use(
 
 // renderPage wrapper middleware
 app.use(setupRender);
+
+// logRequests middleware
+app.use(logRequests);
 
 app.get("/", requireAuth, (req, res) => {
   res.renderPage("home");
