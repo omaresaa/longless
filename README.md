@@ -10,17 +10,17 @@ Longless is a full-stack URL shortening service built with Node.js and Express. 
 
 ## Table of contents
 
-- [Features](#features)
-- [Technologies Used](#technologies-used)
+- [**Features**](#features)
+- [**Technologies Used**](#technologies-used)
   - [Backend](#backend)
   - [Frontend](#frontend)
-- [Database Schema](#database-schema)
+- [**Database Schema**](#database-schema)
   - [Users Table](#users-table)
   - [URLs Table](#urls-table)
   - [Clicks Table](#clicks-table)
-- [Project Structure](#project-structure)
-- [Installation & Setup](#installation--setup)
-- [Credits](#credits)
+- [**Project Structure**](#project-structure)
+- [**Installation & Setup**](#installation--setup)
+- [**Credits**](#credits)
 
 ## Features
 
@@ -30,20 +30,21 @@ Longless is a full-stack URL shortening service built with Node.js and Express. 
 - **User Dashboard**: View all your links, clicks statistics, and manage your URLs
 - **Link Management**: Copy links to clipboard and delete unwanted URLs
 - **Responsive Design**: Clean, modern interface built with Tailwind CSS
+- **Production logging** for monitoring and debugging
 
 ## Technologies Used
 
 ### Backend
 
-- **Node.js & Express.js**: Server and routing
-- **SQLite (better-sqlite3)**: Lightweight database with synchronous API
-- **bcrypt**: Password hashing for security
-- **express-session**: Session management
-- **EJS**: Server-side templating
+- [**Node.js**](https://nodejs.org/en) & [**Express.js**](https://expressjs.com/): Server and routing
+- [**SQLite**](https://sqlite.org/) **[(better-sqlite3)](https://github.com/WiseLibs/better-sqlite3)**: Lightweight database with synchronous API
+- [**bcrypt.js**](https://github.com/dcodeIO/bcrypt.js/tree/main): Password hashing for security
+- [**express-session**](https://github.com/expressjs/session/tree/master): Session management
+- [**EJS**](https://ejs.co/): Server-side templating
 
 ### Frontend
 
-- **Tailwind CSS**: Utility-first CSS framework
+- [**Tailwind CSS**](https://tailwindcss.com/): Utility-first CSS framework
 - **Vanilla Javascript**: Interactive features (copy to clipboard)
 
 ## Database Schema
@@ -140,6 +141,46 @@ npm run dev
 
 ```
 http://localhost:3000
+```
+
+## Logging System
+
+The application includes comprehensive structured logging for monitoring and debugging:
+
+### Features
+
+- **Structured JSON Format**: Easy to parse and analyze
+- **Multiple Log Levels**: INFO, WARN, DEBUG, ERROR
+- **Separate Error Logs**: Quick access to failures
+- **Contextual Meta Data**: User IDs, timestamps, request details
+- **Development Console**: Colored output for easier local debugging
+
+### Log Files
+
+- `log/app.log` - All application logs
+- `log/error.log` - Error-level log only
+
+### Logged Events
+
+- User registration and authentication
+- Link creation and deletion
+- Failed login attempts (security monitoring)
+- Short link redirects and clicks
+- Application errors with full stack traces
+- Invalid URL attempts
+- HTTP Requests
+
+Example log entry:
+
+```json
+{
+  "timestamp": "2025-12-18T15:30:45.123Z",
+  "level": "INFO",
+  "message": "Link created",
+  "userId": 5,
+  "shortCode": "abc123",
+  "originalUrl": "https://github.com"
+}
 ```
 
 ## Credits
