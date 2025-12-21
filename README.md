@@ -22,6 +22,7 @@ Longless is a full-stack URL shortening service built with Node.js and Express. 
   - [Clicks Table](#clicks-table)
 - [**Project Structure**](#project-structure)
 - [**Installation & Setup**](#installation--setup)
+- [****Logging System****](#logging-system)
 - [**Credits**](#credits)
 
 ## Features
